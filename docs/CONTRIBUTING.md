@@ -13,11 +13,11 @@
 
 ## Getting Started
 
-When contributing to Monkeytype, it's good to know our best practices, tips, and tricks. First, Monkeytype is written in ~~JavaScript~~ TypeScript, CSS, and HTML (in order of language usage within the project); thus, we assume you are comfortable with these languages or have basic knowledge of them. Our backend is in NodeJS and we use MongoDB to store our user data. Firebase is used for authentication. Redis is used to store ephemeral data (daily leaderboards, jobs via BullMQ, OAuth state parameters). Furthermore, we use Prettier to format our code.
+When contributing to Vimtype, it's good to know our best practices, tips, and tricks. First, Vimtype is written in ~~JavaScript~~ TypeScript, CSS, and HTML (in order of language usage within the project); thus, we assume you are comfortable with these languages or have basic knowledge of them. Our backend is in NodeJS and we use MongoDB to store our user data. Firebase is used for authentication. Redis is used to store ephemeral data (daily leaderboards, jobs via BullMQ, OAuth state parameters). Furthermore, we use `oxfmt` to format our code.
 
 ## How to Contribute
 
-We have two separate contribution guides based on what you're looking to contribute. If you're simply looking to help us augment our language or quotes data, please refer to [CONTRIBUTING_BASIC.md](/docs/CONTRIBUTING_BASIC.md). This guide will go over how to do so easily and without the need to set up a local development server.
+We have two separate contribution guides based on what you're looking to contribute. If you're simply looking to help with small documentation tweaks that do not require a local setup, refer to [CONTRIBUTING_BASIC.md](/docs/CONTRIBUTING_BASIC.md).
 
 If you're looking to make deeper code changes that affect functionality, or will require screenshots of the changes, please refer to [CONTRIBUTING_ADVANCED.md](/docs/CONTRIBUTING_ADVANCED.md).
 
@@ -48,49 +48,13 @@ For types, we use the following:
 #### Examples
 
 - `feat: add new feature (@github_username)`
-- `impr(quotes): add english quotes (@username)`
+- `impr(frontend): adjust caret animation (@username)`
 - `fix(leaderboard): show user rank correctly (@user1, @user2, @user3)`
 
-### Theme Guidelines
+### Content Contributions
 
-<!-- TODO: add screenshots to provide examples for dos and don'ts -->
-
-Before submitting a theme make sure...
-
-- your theme is unique and isn't visually similar to any we already have.
-- the text color is either black or white (or very close to these colors)
-- your theme has been added to the `_list` file and the `textColor` property is the theme's main color
-- your theme is clear and readable with both `flip test colors` and `colorful mode` enabled and disabled
-
-If you want to contribute themes but don't know how, check [THEMES.md](/docs/THEMES.md) 
-
-### Language Guidelines
-
-- Do not include expletive words
-- Ensure that your contribution meets JSON standards (no trailing comma at the end of a list)
-- Be sure to add your language to the `_list` and `_groups` files
-- Make sure the number of words in the file corresponds to the file name (for example: `languageName.json` is 200 words, `languageName_1k.json` is 1000 words, and so on)
-
-If you want to contribute languages but don't know how, check [LANGUAGES.md](/docs/LANGUAGES.md)
-
-### Quote Guidelines
-
-- Do not include content that contains any libelous or otherwise unlawful, abusive, or obscene text.
-- Ensure that your contribution meets JSON standards (no trailing comma at the end of a list)
-- Verify quotes added aren't duplicates of any already present
-- Verify the `length` property is correct (length of the text in characters)
-- Verify the `id` property is incremented correctly
-- Please do not add extremely short quotes (less than 60 characters)
-- For quotes not in English, please include translations of quotes in the description of your pull request. This assists in the verification process to ensure the integrity of the quotes.
-- Remember to name your pull request properly. For example, if you are adding new quotes for the language `French`, your pull request should be named `impr(quotes): add French quotes`.
-
-
-If you want to contribute quotes but don't know how, check [QUOTES.md](/docs/QUOTES.md)
-
-### Layout Guidelines
-
-If you want to contribute layouts but don't know how, check [LAYOUTS.md](/docs/LAYOUTS.md)
+Vimtype does not accept direct contributions for themes, languages, quotes, fonts, or layouts. Those assets are managed upstream in Monkeytype and periodically synced into Vimtype. If you want to contribute to those areas, please contribute to Monkeytype instead.
 
 ## Questions
 
-If you have any questions, comments, concerns, or problems let me know on [GitHub](https://github.com/Miodec), [Discord](https://discord.gg/monkeytype) in the `#development` channel, or ask a question on Monkeytype's [GitHub discussions](https://github.com/monkeytypegame/monkeytype/discussions) and a contributor will be happy to assist you.
+If you have any questions, comments, concerns, or problems, open an issue or discussion in this repository and a contributor will be happy to assist you.
