@@ -18,6 +18,15 @@ pnpm dev
 
 For workspace-specific workflows, see `docs/CONTRIBUTING_ADVANCED.md`.
 
+## Project Docs
+- `docs/vision.md`
+- `docs/architecture.md`
+- `docs/algorithm_content_plan.md`
+- `docs/vim_engine_plan.md`
+- `docs/testing_deployment_compliance.md`
+- `docs/initial_backlog.md`
+- `docs/milestones.md`
+
 ## Contributing
 Start with `docs/CONTRIBUTING.md` for contribution paths and PR guidelines.
 

@@ -42,3 +42,7 @@
 - Scoring must match Monkeytype: only character insertions count as typed characters.
 - Avoid features that insert multiple characters per key (macros, register paste) to preserve scoring integrity.
 - Algorithm prompts must be original, public-domain solutions; no external IP or pseudocode.
+
+## Project Plan
+- The source of truth is `vimtype_project_plan.md`; keep changes aligned with its milestones and constraints.
+- Milestones progress from “fork boots unchanged” through algorithms content, Vim modes, scoring parity, and production hardening.
