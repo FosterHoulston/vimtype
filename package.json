@@ -26,7 +26,7 @@
     "test-be": "turbo run test integration-test --filter @monkeytype/backend",
     "test-fe": "turbo run test --filter @monkeytype/frontend",
     "test-pkg": "turbo run test --filter=\"./packages/*\"",
-    "dev": "turbo run dev --force",
+    "dev": "turbo run dev --force --filter=!@monkeytype/release",
     "dev-be": "turbo run dev --force --filter @monkeytype/backend",
     "dev-fe": "turbo run dev --force --filter @monkeytype/frontend",
     "dev-pkg": "turbo run dev --force --filter=\"./packages/*\"",
