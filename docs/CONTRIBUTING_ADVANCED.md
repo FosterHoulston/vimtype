@@ -45,6 +45,8 @@ For package management, we use `pnpm` instead of `npm` or `yarn`. You can instal
 
 You can use docker to run the frontend and backend. This will take care of OS-specific problems but might be a bit more resource-intensive. You can download it from the [Docker website](https://www.docker.com/get-started/#h_installation).
 
+If you switch between local `pnpm` installs and Docker, remove `node_modules` on the host before starting Docker to avoid native dependency mismatches (for example, `esbuild`).
+
 ### Firebase (optional)
 
 The account system will not let you create an account without a Firebase project. You can skip this if you don't think you will need it (you can always set it up later)
