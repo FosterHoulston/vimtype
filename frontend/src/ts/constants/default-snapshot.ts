@@ -98,6 +98,7 @@ const defaultSnap = {
     time: {},
     words: {},
     quote: {},
+    algorithms: {},
     zen: {},
     custom: {},
   },

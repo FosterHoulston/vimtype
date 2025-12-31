@@ -18,6 +18,7 @@ const object: ResultFilters = {
     words: true,
     time: true,
     quote: true,
+    algorithms: true,
     zen: true,
     custom: true,
   },

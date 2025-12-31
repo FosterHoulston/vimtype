@@ -49,6 +49,7 @@ const actionModals: Record<Action, SimpleModal> = {
           time: {},
           words: {},
           quote: {},
+          algorithms: {},
           zen: {},
           custom: {},
         },

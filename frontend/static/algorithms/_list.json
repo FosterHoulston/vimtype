@@ -1,0 +1,42 @@
+[
+  {
+    "id": "binary_search_iterative_ts",
+    "title": "Binary Search (Iterative)",
+    "language": "typescript",
+    "difficulty": "easy",
+    "topicTags": ["search", "array"],
+    "solutionText": "export function binarySearch(arr: number[], target: number): number {\n\tlet left = 0;\n\tlet right = arr.length - 1;\n\twhile (left <= right) {\n\t\tconst mid = Math.floor((left + right) / 2);\n\t\tconst value = arr[mid];\n\t\tif (value === target) return mid;\n\t\tif (value < target) left = mid + 1;\n\t\telse right = mid - 1;\n\t}\n\treturn -1;\n}\n",
+    "license": "CC0-1.0",
+    "authorship": "vimtype"
+  },
+  {
+    "id": "two_sum_ts",
+    "title": "Two Sum",
+    "language": "typescript",
+    "difficulty": "easy",
+    "topicTags": ["array", "hash-map"],
+    "solutionText": "export function twoSum(nums: number[], target: number): [number, number] | null {\n\tconst seen = new Map<number, number>();\n\tfor (let i = 0; i < nums.length; i++) {\n\t\tconst value = nums[i];\n\t\tconst need = target - value;\n\t\tconst match = seen.get(need);\n\t\tif (match !== undefined) return [match, i];\n\t\tseen.set(value, i);\n\t}\n\treturn null;\n}\n",
+    "license": "CC0-1.0",
+    "authorship": "vimtype"
+  },
+  {
+    "id": "merge_two_sorted_lists_ts",
+    "title": "Merge Two Sorted Lists",
+    "language": "typescript",
+    "difficulty": "easy",
+    "topicTags": ["linked-list", "merge"],
+    "solutionText": "export type ListNode = { value: number; next: ListNode | null };\n\nexport function mergeTwoSortedLists(a: ListNode | null, b: ListNode | null): ListNode | null {\n\tconst dummy: ListNode = { value: 0, next: null };\n\tlet tail = dummy;\n\tlet left = a;\n\tlet right = b;\n\twhile (left !== null && right !== null) {\n\t\tif (left.value <= right.value) {\n\t\t\ttail.next = left;\n\t\t\tleft = left.next;\n\t\t} else {\n\t\t\ttail.next = right;\n\t\t\tright = right.next;\n\t\t}\n\t\ttail = tail.next;\n\t}\n\ttail.next = left ?? right;\n\treturn dummy.next;\n}\n",
+    "license": "CC0-1.0",
+    "authorship": "vimtype"
+  },
+  {
+    "id": "fibonacci_iterative_py",
+    "title": "Fibonacci (Iterative)",
+    "language": "python",
+    "difficulty": "easy",
+    "topicTags": ["math", "iteration"],
+    "solutionText": "def fibonacci(n: int) -> int:\n\tif n <= 0:\n\t\treturn 0\n\tif n == 1:\n\t\treturn 1\n\ta = 0\n\tb = 1\n\tfor _ in range(2, n + 1):\n\t\ta, b = b, a + b\n\treturn b\n",
+    "license": "CC0-1.0",
+    "authorship": "vimtype"
+  }
+]

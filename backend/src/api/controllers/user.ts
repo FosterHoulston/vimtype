@@ -574,6 +574,7 @@ export async function getUser(req: MonkeyRequest): Promise<GetUserResponse> {
     time: {},
     words: {},
     quote: {},
+    algorithms: {},
     zen: {},
     custom: {},
   };

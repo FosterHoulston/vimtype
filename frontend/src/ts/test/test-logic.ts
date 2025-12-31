@@ -587,6 +587,9 @@ export function areAllTestWordsGenerated(): boolean {
     (Config.mode === "quote" &&
       TestWords.words.length >=
         (TestWords.currentQuote?.textSplit?.length ?? 0)) ||
+    (Config.mode === "algorithms" &&
+      TestWords.words.length >=
+        (TestWords.currentAlgorithm?.textSplit?.length ?? 0)) ||
     (Config.mode === "custom" &&
       CustomText.getLimitMode() === "section" &&
       WordsGenerator.sectionIndex >= CustomText.getLimitValue() &&
@@ -873,7 +876,10 @@ export async function finish(difficultyFailed = false): Promise<void> {
 
   TestUI.onTestFinish();
 
-  if (TestState.isRepeated && Config.mode === "quote") {
+  if (
+    TestState.isRepeated &&
+    (Config.mode === "quote" || Config.mode === "algorithms")
+  ) {
     TestState.setRepeated(false);
   }
 

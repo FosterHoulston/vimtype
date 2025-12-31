@@ -100,7 +100,10 @@ export const configMetadata: ConfigMetadataObject = {
     changeRequiresRestart: true,
     group: "test",
     overrideValue: ({ value, currentConfig }) => {
-      if (currentConfig.mode === "quote") {
+      if (
+        currentConfig.mode === "quote" ||
+        currentConfig.mode === "algorithms"
+      ) {
         return false;
       }
       return value;
@@ -111,7 +114,10 @@ export const configMetadata: ConfigMetadataObject = {
     changeRequiresRestart: true,
     group: "test",
     overrideValue: ({ value, currentConfig }) => {
-      if (currentConfig.mode === "quote") {
+      if (
+        currentConfig.mode === "quote" ||
+        currentConfig.mode === "algorithms"
+      ) {
         return false;
       }
       return value;
@@ -150,7 +156,12 @@ export const configMetadata: ConfigMetadataObject = {
     changeRequiresRestart: true,
     group: "test",
     overrideConfig: ({ value }) => {
-      if (value === "custom" || value === "quote" || value === "zen") {
+      if (
+        value === "custom" ||
+        value === "quote" ||
+        value === "algorithms" ||
+        value === "zen"
+      ) {
         return {
           numbers: false,
           punctuation: false,

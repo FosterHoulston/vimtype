@@ -257,6 +257,8 @@ export function getMode2<M extends keyof PersonalBests>(
     retVal = config.time.toString();
   } else if (mode === "words") {
     retVal = config.words.toString();
+  } else if (mode === "algorithms") {
+    retVal = "custom";
   } else if (mode === "custom") {
     retVal = "custom";
   } else if (mode === "zen") {

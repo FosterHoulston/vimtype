@@ -105,7 +105,7 @@ export function canSetConfigWithCurrentFunboxes(
         }),
       );
     }
-    if (value === "quote" || value === "custom") {
+    if (value === "quote" || value === "custom" || value === "algorithms") {
       fb = fb.concat(
         funboxes.filter((f) => {
           const funcs = f.frontendFunctions ?? [];

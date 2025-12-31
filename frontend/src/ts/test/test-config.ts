@@ -57,6 +57,9 @@ export async function instantUpdate(): Promise<void> {
     $("#testConfig .quoteLength").removeClass("hidden");
 
     updateActiveExtraButtons("quoteLength", Config.quoteLength);
+  } else if (Config.mode === "algorithms") {
+    $("#testConfig .rightSpacer").removeClass("hidden");
+    $("#testConfig .algorithms").removeClass("hidden");
   } else if (Config.mode === "custom") {
     $("#testConfig .puncAndNum").removeClass("hidden").css({
       width: "",
@@ -93,6 +96,7 @@ async function update(previous: Mode, current: Mode): Promise<void> {
     words: "wordCount",
     custom: "customText",
     quote: "quoteLength",
+    algorithms: "algorithms",
     zen: "zen",
   };
 
@@ -110,6 +114,7 @@ async function update(previous: Mode, current: Mode): Promise<void> {
     words: true,
     custom: true,
     quote: false,
+    algorithms: false,
     zen: false,
   };
 

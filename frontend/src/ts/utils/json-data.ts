@@ -90,6 +90,17 @@ export type LanguageProperties = Pick<
   "noLazyMode" | "ligatures" | "rightToLeft" | "additionalAccents"
 >;
 
+export type AlgorithmPrompt = {
+  id: string;
+  title: string;
+  language: string;
+  difficulty: string;
+  topicTags: string[];
+  solutionText: string;
+  license: string;
+  authorship: string;
+};
+
 let currentLanguage: LanguageObject;
 
 /**
@@ -160,6 +171,13 @@ export type FunboxWordOrder = "normal" | "reverse";
  */
 export async function getChallengeList(): Promise<Challenge[]> {
   const data = await cachedFetchJson<Challenge[]>("/challenges/_list.json");
+  return data;
+}
+
+export async function getAlgorithmList(): Promise<AlgorithmPrompt[]> {
+  const data = await cachedFetchJson<AlgorithmPrompt[]>(
+    "/algorithms/_list.json",
+  );
   return data;
 }
 

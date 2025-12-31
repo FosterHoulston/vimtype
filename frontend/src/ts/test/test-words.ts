@@ -1,3 +1,4 @@
+import { AlgorithmWithTextSplit } from "../controllers/algorithms-controller";
 import { QuoteWithTextSplit } from "../controllers/quotes-controller";
 import * as TestState from "./test-state";
 
@@ -61,9 +62,16 @@ export let hasTab = false;
 export let hasNewline = false;
 export let hasNumbers = false;
 export let currentQuote = null as QuoteWithTextSplit | null;
+export let currentAlgorithm = null as AlgorithmWithTextSplit | null;
 
 export function setCurrentQuote(rq: QuoteWithTextSplit | null): void {
   currentQuote = rq;
+}
+
+export function setCurrentAlgorithm(
+  algorithm: AlgorithmWithTextSplit | null,
+): void {
+  currentAlgorithm = algorithm;
 }
 
 export function setHasTab(tf: boolean): void {

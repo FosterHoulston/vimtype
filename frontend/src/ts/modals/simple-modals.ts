@@ -921,6 +921,7 @@ list.resetPersonalBests = new SimpleModal({
       time: {},
       words: {},
       quote: {},
+      algorithms: {},
       zen: {},
       custom: {},
     };

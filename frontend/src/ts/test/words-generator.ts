@@ -1,6 +1,9 @@
 import Config, { setConfig, setQuoteLengthAll, toggleFunbox } from "../config";
 import * as CustomText from "./custom-text";
 import { Wordset, FunboxWordsFrequency, withWords } from "./wordset";
+import AlgorithmsController, {
+  AlgorithmWithTextSplit,
+} from "../controllers/algorithms-controller";
 import QuotesController, {
   Quote,
   QuoteWithTextSplit,
@@ -423,9 +426,14 @@ export function getLimit(): number {
   let limit = 100;
 
   const currentQuote = TestWords.currentQuote;
+  const currentAlgorithm = TestWords.currentAlgorithm;
 
   if (Config.mode === "quote" && currentQuote === null) {
     throw new WordGenError("Random quote is null");
+  }
+
+  if (Config.mode === "algorithms" && currentAlgorithm === null) {
+    throw new WordGenError("Random algorithm is null");
   }
 
   const funboxToPush =
@@ -442,6 +450,9 @@ export function getLimit(): number {
     }
     if (Config.mode === "quote") {
       limit = (currentQuote as QuoteWithTextSplit).textSplit.length;
+    }
+    if (Config.mode === "algorithms") {
+      limit = (currentAlgorithm as AlgorithmWithTextSplit).textSplit.length;
     }
   }
 
@@ -481,6 +492,13 @@ export function getLimit(): number {
   }
 
   if (
+    Config.mode === "algorithms" &&
+    (currentAlgorithm as AlgorithmWithTextSplit).textSplit.length < limit
+  ) {
+    limit = (currentAlgorithm as AlgorithmWithTextSplit).textSplit.length;
+  }
+
+  if (
     Config.mode === "custom" &&
     CustomText.getLimitMode() === "word" &&
     CustomText.getLimitValue() < limit &&
@@ -490,6 +508,33 @@ export function getLimit(): number {
   }
 
   return limit;
+}
+
+function splitAlgorithmText(text: string): string[] {
+  const normalized = text.replace(/\r\n?/g, "\n");
+  const hasTrailingNewline = normalized.endsWith("\n");
+  const lines = normalized.split("\n");
+  const words: string[] = [];
+
+  lines.forEach((line, lineIndex) => {
+    if (line === "") {
+      if (lineIndex < lines.length - 1 || hasTrailingNewline) {
+        words.push("\n");
+      }
+      return;
+    }
+
+    const lineWords = line.split(" ");
+    lineWords.forEach((word, wordIndex) => {
+      if (word === "") return;
+      const isLastWord = wordIndex === lineWords.length - 1;
+      const appendNewline =
+        isLastWord && (lineIndex < lines.length - 1 || hasTrailingNewline);
+      words.push(appendNewline ? `${word}\n` : word);
+    });
+  });
+
+  return words;
 }
 
 async function getQuoteWordList(
@@ -590,6 +635,48 @@ async function getQuoteWordList(
   return TestWords.currentQuote.textSplit;
 }
 
+async function getAlgorithmWordList(
+  wordOrder?: FunboxWordOrder,
+): Promise<string[]> {
+  if (TestState.isRepeated) {
+    if (currentWordset === null) {
+      throw new WordGenError("Current wordset is null");
+    }
+
+    TestWords.setCurrentAlgorithm(previousRandomAlgorithm);
+
+    if (wordOrder === "reverse") {
+      return currentWordset.words.reverse();
+    }
+
+    return currentWordset.words;
+  }
+
+  Loader.show();
+  const algorithm = await AlgorithmsController.getRandomAlgorithm();
+  Loader.hide();
+
+  if (algorithm === null) {
+    setConfig("mode", "words");
+    throw new WordGenError("No algorithms found");
+  }
+
+  const normalized = algorithm.solutionText.replace(/ +/gm, " ").trimEnd();
+  algorithm.textSplit = splitAlgorithmText(normalized);
+
+  TestWords.setCurrentAlgorithm(algorithm as AlgorithmWithTextSplit);
+
+  if (TestWords.currentAlgorithm === null) {
+    throw new WordGenError("Random algorithm is null");
+  }
+
+  if (TestWords.currentAlgorithm.textSplit === undefined) {
+    throw new WordGenError("Random algorithm textSplit is undefined");
+  }
+
+  return TestWords.currentAlgorithm.textSplit;
+}
+
 let currentWordset: Wordset | null = null;
 let currentLanguage: LanguageObject | null = null;
 let isCurrentlyUsingFunboxSection = false;
@@ -604,6 +691,7 @@ type GenerateWordsReturn = {
 };
 
 let previousRandomQuote: QuoteWithTextSplit | null = null;
+let previousRandomAlgorithm: AlgorithmWithTextSplit | null = null;
 
 export async function generateWords(
   language: LanguageObject,
@@ -612,7 +700,9 @@ export async function generateWords(
     previousGetNextWordReturns = [];
   }
   previousRandomQuote = TestWords.currentQuote;
+  previousRandomAlgorithm = TestWords.currentAlgorithm;
   TestWords.setCurrentQuote(null);
+  TestWords.setCurrentAlgorithm(null);
   currentSection = [];
   sectionIndex = 0;
   sectionHistory = [];
@@ -636,6 +726,8 @@ export async function generateWords(
     wordList = CustomText.getText();
   } else if (Config.mode === "quote") {
     wordList = await getQuoteWordList(language, wordOrder);
+  } else if (Config.mode === "algorithms") {
+    wordList = await getAlgorithmWordList(wordOrder);
   } else if (Config.mode === "zen") {
     wordList = [];
   }
@@ -704,21 +796,34 @@ export async function generateWords(
   }
 
   const quote = TestWords.currentQuote;
+  const algorithm = TestWords.currentAlgorithm;
 
   if (Config.mode === "quote" && quote === null) {
     throw new WordGenError("Random quote is null");
+  }
+
+  if (Config.mode === "algorithms" && algorithm === null) {
+    throw new WordGenError("Random algorithm is null");
   }
 
   ret.hasTab =
     ret.words.some((w) => w.includes("\t")) ||
     currentWordset.words.some((w) => w.includes("\t")) ||
     (Config.mode === "quote" &&
-      (quote as QuoteWithTextSplit).textSplit.some((w) => w.includes("\t")));
+      (quote as QuoteWithTextSplit).textSplit.some((w) => w.includes("\t"))) ||
+    (Config.mode === "algorithms" &&
+      (algorithm as AlgorithmWithTextSplit).textSplit.some((w) =>
+        w.includes("\t"),
+      ));
   ret.hasNewline =
     ret.words.some((w) => w.includes("\n")) ||
     currentWordset.words.some((w) => w.includes("\n")) ||
     (Config.mode === "quote" &&
-      (quote as QuoteWithTextSplit).textSplit.some((w) => w.includes("\n")));
+      (quote as QuoteWithTextSplit).textSplit.some((w) => w.includes("\n"))) ||
+    (Config.mode === "algorithms" &&
+      (algorithm as AlgorithmWithTextSplit).textSplit.some((w) =>
+        w.includes("\n"),
+      ));
 
   sectionHistory = []; //free up a bit of memory? is that even a thing?
   return ret;
@@ -763,7 +868,11 @@ export async function getNextWord(
   //because quote test can be repeated in the middle of a test
   //we cant rely on data inside previousGetNextWordReturns
   //because it might not include the full quote
-  if (TestState.isRepeated && Config.mode !== "quote") {
+  if (
+    TestState.isRepeated &&
+    Config.mode !== "quote" &&
+    Config.mode !== "algorithms"
+  ) {
     const repeated = previousGetNextWordReturns[wordIndex];
 
     if (repeated === undefined) {
@@ -811,7 +920,7 @@ export async function getNextWord(
   if (currentSection.length === 0) {
     const funboxSection = await getFunboxSection();
 
-    if (Config.mode === "quote") {
+    if (Config.mode === "quote" || Config.mode === "algorithms") {
       randomWord = currentWordset.nextWord();
     } else if (Config.mode === "custom" && CustomText.getMode() === "repeat") {
       randomWord = currentWordset.nextWord();

@@ -201,12 +201,13 @@ async function updateUser(uid: string): Promise<void> {
     words: {},
     zen: {},
     quote: {},
+    algorithms: {},
   };
   const modes = stats.map(
     (it) =>
       it["_id"] as {
         language: Language;
-        mode: "time" | "custom" | "words" | "quote" | "zen";
+        mode: "time" | "custom" | "words" | "quote" | "zen" | "algorithms";
         mode2: `${number}` | "custom" | "zen";
       },
   );

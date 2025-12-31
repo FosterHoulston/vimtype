@@ -56,6 +56,9 @@ function update(): void {
     }
     el.find(".punctuation").addClass("disabled");
     el.find(".numbers").addClass("disabled");
+  } else if (Config.mode === "algorithms") {
+    el.find(".punctuation").addClass("disabled");
+    el.find(".numbers").addClass("disabled");
   } else if (Config.mode === "zen") {
     el.find(".punctuation").addClass("disabled");
     el.find(".numbers").addClass("disabled");

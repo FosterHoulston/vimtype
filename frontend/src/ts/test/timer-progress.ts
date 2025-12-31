@@ -194,7 +194,8 @@ export function update(): void {
     } else if (
       Config.mode === "words" ||
       Config.mode === "custom" ||
-      Config.mode === "quote"
+      Config.mode === "quote" ||
+      Config.mode === "algorithms"
     ) {
       let outof = TestWords.words.length;
       if (Config.mode === "words") {
@@ -205,6 +206,9 @@ export function update(): void {
       }
       if (Config.mode === "quote") {
         outof = TestWords.currentQuote?.textSplit.length ?? 1;
+      }
+      if (Config.mode === "algorithms") {
+        outof = TestWords.currentAlgorithm?.textSplit.length ?? 1;
       }
       if (Config.timerStyle === "bar") {
         const percent = Math.floor(
