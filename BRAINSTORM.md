@@ -12,7 +12,7 @@
 - What is an estimate of the maximum number of active users at any given time?
 
 ## Decisions that need to be made (ordered and answered)
-1. What are the primary end-goals of the project?
+### 1. What are the primary end-goals of the project?
 
 - Improve my low-level programming skills.
 - Improve my javascript skills.
@@ -25,16 +25,16 @@
 - Release the MVP before I start sending out applications August 16th.
 - Express my passion for Vim and typing.
 
-2. What is the timeframe for the MVP?
+### 2. What is the timeframe for the MVP?
 
-The MVP must be complete by **August 16th, 2026**.
+- The MVP must be complete by **August 16th, 2026**.
 
-3. What is an estimate of the maximum number of active users at any given time?
+### 3. What is an estimate of the maximum number of active users at any given time?
 
-Initially, there should be no more than **1,000** users at a time, but scalability
-will be incorporated into the design, so that this number can if necessary.
+- Initially, there should be no more than **1,000** users at a time, but scalability
+  will be incorporated into the design, so that this number can if necessary.
 
-4. What languages and technologies are prefered for this project?
+### 4. What languages and technologies are prefered for this project?
 
 - Postgresql
 - Nginx
@@ -46,9 +46,16 @@ will be incorporated into the design, so that this number can if necessary.
 - Custom (simple) LSP
 - AI API/s (if there is time)
 
-5. What will gamepaly look like?
+### 5. What will gamepaly look like?
 
-(see [Gameplay](#Gameplay))
+- (see [Gameplay](#Gameplay))
+
+### 6. Am I implementing a real terminal in the browser, or am I creating an emulation?
+
+*Are there any **real** browser terminals out there already?*
+
+- Neither. I will use Rhysd's vim.wasm project that compiles Vim (not Neovim) to WASM,
+  with a canvas renderer. Also use Rhysd's react-vim-wasm component.
 
 
 ## Gameplay
@@ -106,7 +113,7 @@ will be incorporated into the design, so that this number can if necessary.
   session, as well as the total number of characters in the completed code block.
   Longer codeblocks will result in a higher score curve.
 
-- Highscores of regitered users will be recorded on leaderboards table.
+- Highscores of regitered users will be recorded on a leaderboards table.
 
 ### Cheating
 - To prevent cheating (if a real terminal is used), certain commands will need to
