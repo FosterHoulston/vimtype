@@ -86,7 +86,14 @@
   - it is not a typing speed test. The player only navigates to designated
     cursor positions. There is no typing involved.
 
-- 
+- vimonlineeditor.com
+  - Closest product to vimtype
+  - Uses vim-wasm
+  - Contains a functioning vim editor in the browser
+  - Is not typing speed test. It is only a proof of concept.
+  - It contains a changelog of updates that were necessary to get vim-wasm running.
+
+### 9. What design methodology will be used?
 
 ## Gameplay
 
