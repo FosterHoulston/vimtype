@@ -78,6 +78,15 @@
 
 - The MVP will also be hosted with its own domain.
 
+### 8. Are there any products/apps that have similar parts to this app?
+
+- Vim-racer.com
+  - Only uses vim motions
+  - doesn not appear to be using the real vim engine
+  - it is not a typing speed test. The player only navigates to designated
+    cursor positions. There is no typing involved.
+
+- 
 
 ## Gameplay
 
