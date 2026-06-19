@@ -57,6 +57,27 @@
 - Neither. I will use Rhysd's vim.wasm project that compiles Vim (not Neovim) to WASM,
   with a canvas renderer. Also use Rhysd's react-vim-wasm component.
 
+### 7. What will the MVP look like?
+
+- The MVP will have the following pages:
+  1. game lobby
+  2. game session
+  3. game results
+  4. leaderboards
+  5. profile
+  6. settings
+  7. rules
+
+- The MVP will have the following features:
+  1. Javascript and Typescript test language options
+  2. 20 unique test codeblocks
+  3. line number toggle
+  4. relative line number toggle
+  5. 10 theme options
+  6. scoring algorithm
+
+- The MVP will also be hosted with its own domain.
+
 
 ## Gameplay
 
