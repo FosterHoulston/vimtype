@@ -16,8 +16,8 @@
 
 - Improve my low-level programming skills.
 - Improve my javascript skills.
-- Improve my systems design knowlege.
-- Improve my Vim knowlege and speed.
+- Improve my systems design knowledge.
+- Improve my Vim knowledge and speed.
 - Understand memory and computers on a deeper level.
 - Understand data management and scalability on a deeper level.
 - Design a moderately complex and efficient full-stack web application.
@@ -32,9 +32,9 @@
 ### 3. What is an estimate of the maximum number of active users at any given time?
 
 - Initially, there should be no more than **1,000** users at a time, but scalability
-  will be incorporated into the design, so that this number can if necessary.
+  will be incorporated into the design, so that this number can grow if necessary.
 
-### 4. What languages and technologies are prefered for this project?
+### 4. What languages and technologies are preferred for this project?
 
 - Postgresql
 - Nginx
@@ -46,7 +46,7 @@
 - Custom (simple) LSP
 - AI API/s (if there is time)
 
-### 5. What will gamepaly look like?
+### 5. What will gameplay look like?
 
 - (see [Gameplay](#Gameplay))
 
@@ -82,7 +82,7 @@
 
 - Vim-racer.com
   - Only uses vim motions
-  - doesn not appear to be using the real vim engine
+  - does not appear to be using the real vim engine
   - it is not a typing speed test. The player only navigates to designated
     cursor positions. There is no typing involved.
 
@@ -96,13 +96,24 @@
 ### 9. What design methodology will be used?
 - Agile is a common choice in the industry.
 - From page 28 diagram from 648 notes, Evolutionary looks like the best fit to what
-  I already had in mind, (mostly due to the fact that specifications can be re-written
-  with development and validation)
+  I already had in mind (mostly due to the fact that specifications can be re-written
+  with development and validation).
 - Incremental seems to be a better compromise. Perhaps I should use Incremental with
   Evolutionary and Extreme SE (see p. 41)
 - Some form of eXtreme Programming seems to offer the most flexibility and consistency
-  which will be needed, as the exact requirments and specifications may not be known
+  which will be needed, as the exact requirements and specifications may not be known
   until after implementation and design starts.
+- Kanban offers simple workflows and flexibility that should be easier and more
+  efficient for a solo project. If paired with any of the other methodologies
+  it can make for a realistic option within the project's two-month timeframe.
+
+**Final Decision:**
+- Kanban with the following Extreme Programming elements:
+  1. Small commits
+  2. Continuous refactoring
+  3. Simple design (YAGNI)
+  4. Automated tests
+  5. Consistent coding standards
 
 
 ## Gameplay
@@ -113,7 +124,7 @@
 - Tabs/Spaces
 - Line numbers
 - Relative line numbers
-- indnet-2/indent-4 (indentation width)
+- indent-2/indent-4 (indentation width)
 
 #### There will initially be 2 typing test programming languages available:
 1. Javascript
@@ -129,10 +140,10 @@
   caret position.
 
 - The styles, formats, spacing, fonts, and themes will match real, popular configs
-  from Iterm2 and Neovim.
+  from iTerm2 and Neovim.
 
 - The left pane starts with just a function/class header/definition, and an empty
-  body, enclosed in curly brackets, (or whatever encapsulation symbol is relevant
+  body, enclosed in curly brackets (or whatever encapsulation symbol is relevant
   for the current language). The caret starts at the first character, after the
   function header, of the complete code block presented in the right pane.
 
@@ -142,10 +153,10 @@
   line that is incorrectly positioned and/or contains an error.
 
 - Incorrect line and/or indentation positioning will not affect the non-indentation
-  characters of each line, (i.e. error underlining for characters that are not
-  indentation characters will not occur strictly due to incorrect indentation. The
+  characters of each line (i.e. error underlining for characters that are not
+  indentation characters will not occur strictly due to incorrect indentation). The
   LSP will always judge non-indentation/newline characters against the correct line
-  and indentation, even if the line position and/or indentation is incorrect).
+  and indentation, even if the line position and/or indentation is incorrect.
 
 - The object of the game is for the player to make the left pane completely
   match the right pane, in as short of a time as possible. The game ends when
@@ -160,7 +171,7 @@
   session, as well as the total number of characters in the completed code block.
   Longer codeblocks will result in a higher score curve.
 
-- Highscores of regitered users will be recorded on a leaderboards table.
+- Highscores of registered users will be recorded on a leaderboards table.
 
 ### Cheating
 - To prevent cheating (if a real terminal is used), certain commands will need to
@@ -169,6 +180,6 @@
 - If a registered user stops a game session before completing it, they will not have
   the ability to test with any other codeblock until they have completed their
   incomplete codeblock. Even if they close their browser, upon their return,
-  they must only have access to the test they have not yet completed . Additionally,
+  they must only have access to the test they have not yet completed. Additionally,
   every time they restart the same game session, the left pane switches to a new
   random set of errors.
