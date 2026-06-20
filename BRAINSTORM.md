@@ -52,31 +52,40 @@
 
 ### 6. Am I implementing a real terminal in the browser, or am I creating an emulation?
 
-*Are there any **real** browser terminals out there already?*
-
 - Neither. I will use Rhysd's vim.wasm project that compiles Vim (not Neovim) to WASM,
   with a canvas renderer. Also use Rhysd's react-vim-wasm component.
 
 ### 7. What will the MVP look like?
 
 - The MVP will have the following pages:
-  1. game lobby
-  2. game session
+  1. The **game lobby** displays the "Start Game" button, as well as all
+     customizable feature options.
+  2. The **game session** displays two vertical panes that display the 1. test canvas
+     (left pane) where the player modifies the character elements within the canvas
+     and sees all the test errors and current test state, and the test caret, and 2.
+     the model canvas (right pane) where the desired completed test state
+     is displayed, aswell as a tracking caret.
   3. game results
   4. leaderboards
-  5. profile
-  6. settings
   7. rules
 
 - The MVP will have the following features:
-  1. Javascript and Typescript test language options
-  2. 20 unique test codeblocks
-  3. line number toggle
-  4. relative line number toggle
-  5. 10 theme options
-  6. scoring algorithm
+  1. Javascript and Typescript test language options shall be available for all
+     test codeblocks and selectable from the game lobby and will persist for
+     all future game sessions until the other language is selected again.
+  2. 20 unique test codeblocks shall be integrated into and available for all
+     game sessions.
+  3. A relative line number toggle shall be present in the game lobby that can
+     toggle relative line numbers on and off in the number column that will 
+     persist for all future game sessions until the toggle is selected again.
+  4. 10 color theme options shall be available for selection within the game 
+     lobby that offer different text/background/highlight/status bar colors
+     from common Vim configs.
+  6. A scoring algorithm shall score each game session based on the codeblock's
+     total character count, the number of starting errors, and the player's
+     completion time, flagging impossibly fast completions as cheating.
 
-- The MVP will also be hosted with its own domain.
+- The MVP shall also be hosted with its own domain on an AWS EC2 instance.
 
 ### 8. Are there any products/apps that have similar parts to this app?
 
