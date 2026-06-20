@@ -94,6 +94,16 @@
   - It contains a changelog of updates that were necessary to get vim-wasm running.
 
 ### 9. What design methodology will be used?
+- Agile is a common choice in the industry.
+- From page 28 diagram from 648 notes, Evolutionary looks like the best fit to what
+  I already had in mind, (mostly due to the fact that specifications can be re-written
+  with development and validation)
+- Incremental seems to be a better compromise. Perhaps I should use Incremental with
+  Evolutionary and Extreme SE (see p. 41)
+- Some form of eXtreme Programming seems to offer the most flexibility and consistency
+  which will be needed, as the exact requirments and specifications may not be known
+  until after implementation and design starts.
+
 
 ## Gameplay
 
