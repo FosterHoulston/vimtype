@@ -18,3 +18,10 @@ WIP = **1**
 
 
 ## Step 5. Use the board to spot bottlenecks and improve over time
+
+## Additional Notes
+
+- The project can start right away and does not need any requirments
+  to start. Just add ideas to the backlog and then break down the
+  backlog ideas into small, prioritized, In Progress tasks.
+- 
