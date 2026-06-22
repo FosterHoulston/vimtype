@@ -45,7 +45,8 @@ stage-specific criteria below:
 ### Enter Done
 
 - Behavior verified against what the card asked for
-- No known regressions introduced
+- No known regressions introduced -- No prior features have broken 
+  due to the new changes
 - Definition of Done (above) is satisfied
 - Merged to `main`; nothing left to "clean up later"
 
