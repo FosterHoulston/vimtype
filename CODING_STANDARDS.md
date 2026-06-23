@@ -130,17 +130,68 @@ trim_trailing_whitespace = true
 
 ## 10. Commit Conventions
 
-Follows the existing project history. Format:
+The source of truth is qoomon's **Conventional Commits Cheatsheet**:
+<https://gist.github.com/qoomon/5dfcdf8eec66a051ecd85625518cfd13>. The rules
+below summarize it; the gist wins on any conflict.
+
+### Structure
 
 ```
-<type>: <short imperative summary>
+<type>(<optional scope>): <description>
+
+<optional body>
+
+<optional footer>
 ```
 
-- **Types in use:** `add`, `update`, `fix`, `refactor`, `docs`, `test`, `chore`.
-- Summary lowercase, no trailing period preferred; ~50 chars.
-- One logical change per commit (small commits — XP).
-- Multiple related changes may share a message with several `type:` clauses, as
-  in existing history, but prefer separate commits when they're truly separate.
+Sections are separated by blank lines. The first commit of the repo is
+`chore: init`.
+
+### Types
+
+- **feat** — additions, adjustments, or removals of API or UI features.
+- **fix** — corrections to API or UI bugs from preceding feature commits.
+- **refactor** — code rewrites/restructuring without altering behavior.
+- **perf** — a refactor specifically to improve performance.
+- **style** — formatting only (whitespace, semicolons); no behavioral impact.
+- **test** — adding or correcting tests.
+- **docs** — documentation-only changes.
+- **build** — build tooling, dependencies, or project version changes.
+- **ops** — infrastructure, deployment, CI/CD, monitoring, recovery.
+- **chore** — misc tasks like `init` or editing `.gitignore`.
+
+### Scope (optional)
+
+- Adds context, e.g. `feat(lobby):`. Keep to a small, project-defined set as
+  areas emerge (e.g. `lobby`, `session`, `scoring`, `leaderboard`, `lsp`, `db`).
+- Never use an issue identifier as a scope.
+
+### Description (required)
+
+- Imperative mood: "add", not "added"/"adds".
+- Do not capitalize the first letter.
+- No trailing period.
+
+### Body & footer (optional)
+
+- Body explains motivation and contrasts with previous behavior; imperative mood.
+- Footer holds issue references (`Closes #123`) and breaking-change descriptions.
+
+### Breaking changes
+
+- Mark with `!` before the colon: `feat(api)!: remove status endpoint`.
+- Describe in a footer line starting with `BREAKING CHANGE:`.
+
+### Examples
+
+```
+feat: add email notifications on new direct messages
+fix(scoring): prevent submission of an empty codeblock
+perf: decrease leaderboard query cost with a covering index
+build: update dependencies
+```
+
+One logical change per commit (small commits — XP).
 
 
 ## 11. Tooling Checklist (set up once, before serious coding starts)
