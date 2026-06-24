@@ -61,6 +61,13 @@ TO-DO holds prioritized, ready cards but is **not** work-in-progress (nothing he
 is started), so it has no WIP limit — keep it short and ordered so the top card is
 always the next thing to pull.
 
+**Soft cap: 3.** Since work flows one card at a time, three cards means "the next
+one plus a little lookahead." This is a grooming trigger, not a hard gate: hitting
+the cap doesn't block you, it's the signal to groom before adding more — promote,
+cut, or merge a card rather than just appending. If TO-DO keeps overflowing, the
+real fix is upstream (you're promoting from the Backlog faster than you finish
+work), not a bigger cap.
+
 - Broken down into a small, concrete task (not a broad idea or epic)
 - "Finished" is clearly understood before starting
 - Prioritized relative to the other TO-DO cards
