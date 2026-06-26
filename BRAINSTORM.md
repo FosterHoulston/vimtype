@@ -64,7 +64,7 @@
      (left pane) where the player modifies the character elements within the canvas
      and sees all the test errors and current test state, and the test caret, and 2.
      the model canvas (right pane) where the desired completed test state
-     is displayed, aswell as a tracking caret.
+     is displayed, as well as a tracking caret.
   3. game results
   4. leaderboards
   7. rules
