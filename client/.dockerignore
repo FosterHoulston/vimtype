@@ -1,0 +1,8 @@
+node_modules
+build
+.react-router
+.git
+Dockerfile
+.dockerignore
+README.md
+*.log
