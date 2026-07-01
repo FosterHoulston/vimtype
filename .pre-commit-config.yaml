@@ -1,5 +1,5 @@
 repos:
-- repo: https://github.com/qoomon/git-conventional-commits
-  rev: v2.9.0
-  hooks:
-    - id: conventional-commits
+  - repo: https://github.com/qoomon/git-conventional-commits
+    rev: v2.9.0
+    hooks:
+      - id: conventional-commits

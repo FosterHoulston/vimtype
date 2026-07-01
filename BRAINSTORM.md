@@ -1,6 +1,7 @@
 # Entry point for the design process
 
 ## Decisions that need to be made (unordered)
+
 - What design methodology will be used?
 - Are there any products/apps that have similar parts to this app?
 - What is the timeframe for the MVP?
@@ -12,6 +13,7 @@
 - What is an estimate of the maximum number of active users at any given time?
 
 ## Decisions that need to be made (ordered and answered)
+
 ### 1. What are the primary end-goals of the project?
 
 - Improve my low-level programming skills.
@@ -39,7 +41,7 @@
 - Postgresql
 - Nginx
 - AWS EC2
-- C 
+- C
 - Typescript
 - React
 - Ubuntu Linux
@@ -67,7 +69,7 @@
      is displayed, as well as a tracking caret.
   3. game results
   4. leaderboards
-  7. rules
+  5. rules
 
 - The MVP will have the following features:
   1. Javascript and Typescript test language options shall be available for all
@@ -76,12 +78,12 @@
   2. 20 unique test codeblocks shall be integrated into and available for all
      game sessions.
   3. A relative line number toggle shall be present in the game lobby that can
-     toggle relative line numbers on and off in the number column that will 
+     toggle relative line numbers on and off in the number column that will
      persist for all future game sessions until the toggle is selected again.
-  4. 10 color theme options shall be available for selection within the game 
+  4. 10 color theme options shall be available for selection within the game
      lobby that offer different text/background/highlight/status bar colors
      from common Vim configs.
-  6. A scoring algorithm shall score each game session based on the codeblock's
+  5. A scoring algorithm shall score each game session based on the codeblock's
      total character count, the number of starting errors, and the player's
      completion time, flagging impossibly fast completions as cheating.
 
@@ -103,6 +105,7 @@
   - It contains a changelog of updates that were necessary to get vim-wasm running.
 
 ### 9. What design methodology will be used?
+
 - Agile is a common choice in the industry.
 - From page 28 diagram from 648 notes, Evolutionary looks like the best fit to what
   I already had in mind (mostly due to the fact that specifications can be re-written
@@ -117,6 +120,7 @@
   it can make for a realistic option within the project's two-month timeframe.
 
 **Final Decision:**
+
 - Kanban with the following Extreme Programming elements:
   1. Small commits
   2. Continuous refactoring
@@ -124,27 +128,28 @@
   4. Automated tests
   5. Consistent coding standards
 
-
 ## Gameplay
 
 ### Game Lobby
 
 #### There will be a toggles for:
+
 - Tabs/Spaces
 - Line numbers
 - Relative line numbers
 - indent-2/indent-4 (indentation width)
 
 #### There will initially be 2 typing test programming languages available:
+
 1. Javascript
 2. Typescript
 
-
 ### Game session
+
 - The game session will have 2 vertical panes that take up the entire width of
   the screen. The left pane will contain the player's current game state, while
   the right pane will contain the correct and complete code block that the player
-  is attempting to fill in on the left pane. The right pane will also contain a 
+  is attempting to fill in on the left pane. The right pane will also contain a
   caret that indicates the player's current position, relative to the left pane's
   caret position.
 
@@ -183,6 +188,7 @@
 - Highscores of registered users will be recorded on a leaderboards table.
 
 ### Cheating
+
 - To prevent cheating (if a real terminal is used), certain commands will need to
   be blocked. All terminal commands other than :w should be blocked initially.
 

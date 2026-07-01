@@ -6,7 +6,6 @@
 4. Testing & Validation
 5. Done
 
-
 ## Step 2. Set WIP limit
 
 WIP = **1**
@@ -18,9 +17,7 @@ flows all the way to Done before the next is pulled from TO-DO. Backlog, TO-DO,
 and Done are not counted — their cards are either not yet started or already
 finished.
 
-
 ## Step 3. Create a card for each task
-
 
 ## Step 4. Move work through each stage
 
@@ -44,7 +41,7 @@ started. It is the one column with **no entry gate** — anything can be dropped
 here, including rough ideas that haven't been broken down yet — and **no WIP
 limit**. Cards here are **unordered**: prioritization is a grooming activity that
 happens at the gate into TO-DO, not in the Backlog. Refinement happens on the way
-*out*: an item leaves the Backlog for TO-DO only when it satisfies "Enter TO-DO"
+_out_: an item leaves the Backlog for TO-DO only when it satisfies "Enter TO-DO"
 below.
 
 **Backlog grooming.** The Backlog is not append-only — groom it periodically so it
@@ -87,15 +84,14 @@ work), not a bigger cap.
 ### Enter Done
 
 - Behavior verified against what the card asked for
-- No known regressions introduced -- No prior features have broken 
+- No known regressions introduced -- No prior features have broken
   due to the new changes
 - Definition of Done (above) is satisfied
 - Merged to `main`; nothing left to "clean up later"
 
-
 ## Step 5. Use the board to spot bottlenecks and improve over time
 
-- If cards pile up *before* a column, that column's entry bar — or the
+- If cards pile up _before_ a column, that column's entry bar — or the
   work feeding it — is the bottleneck. Investigate there first.
 
 ## Additional Notes

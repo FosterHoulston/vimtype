@@ -9,12 +9,7 @@ import tseslint from "typescript-eslint";
 export default defineConfig([
   // Don't lint build output or vendored code.
   {
-    ignores: [
-      "**/node_modules/**",
-      "**/dist/**",
-      "**/build/**",
-      "client/.react-router/**",
-    ],
+    ignores: ["**/node_modules/**", "**/dist/**", "**/build/**", "client/.react-router/**"],
   },
 
   // Shared rules for every source file, JS and TS alike.
@@ -30,12 +25,7 @@ export default defineConfig([
         "warn",
         {
           // external → internal → relative, per CODING_STANDARDS §3.
-          groups: [
-            "builtin",
-            "external",
-            "internal",
-            ["parent", "sibling", "index"],
-          ],
+          groups: ["builtin", "external", "internal", ["parent", "sibling", "index"]],
           "newlines-between": "always",
           alphabetize: { order: "asc", caseInsensitive: true },
         },

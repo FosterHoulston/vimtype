@@ -9,7 +9,6 @@ Prefer **automated enforcement** over discipline: formatters and linters run so
 these rules don't have to be remembered. When a tool and this document disagree,
 fix the tool config so they agree.
 
-
 ## 1. Guiding Principles
 
 - **YAGNI.** Don't build for requirements that don't exist yet. Delete dead code
@@ -18,7 +17,6 @@ fix the tool config so they agree.
 - **Clarity over cleverness.** Optimize for the next reader (usually future you).
 - **Small, single-purpose changes.** One concern per commit, one concern per
   function.
-
 
 ## 2. Formatting (all languages)
 
@@ -42,7 +40,6 @@ insert_final_newline = true
 trim_trailing_whitespace = true
 ```
 
-
 ## 3. TypeScript / React (frontend)
 
 - **Formatter:** Prettier (the source of truth for formatting.
@@ -63,7 +60,6 @@ trim_trailing_whitespace = true
 - Prefer `const`; use `let` only when reassigning. Never `var`.
 - Keep components small; lift shared logic into hooks (`useFoo`) or plain modules.
 
-
 ## 4. C (low-level / WASM-adjacent and any native tooling)
 
 - **Formatter:** clang-format. Add a `.clang-format` at the repo root derived from
@@ -79,7 +75,6 @@ trim_trailing_whitespace = true
 - Prefer fixed-width types (`stdint.h`: `uint32_t`, `size_t`) over bare `int`
   where size matters.
 
-
 ## 5. SQL / PostgreSQL
 
 - **Identifiers:** `snake_case`, lowercase. Tables plural (`users`,
@@ -90,7 +85,6 @@ trim_trailing_whitespace = true
   the repo). Never edit a shipped migration; add a new one.
 - Parameterize all queries — never build SQL by string concatenation.
 
-
 ## 6. Comments & Documentation
 
 - Comments explain **why**, not **what**. The code already says what.
@@ -98,7 +92,6 @@ trim_trailing_whitespace = true
   obvious from the signature.
 - Mark deferred work with `// TODO:` and a short reason. No orphaned commented-out
   code.
-
 
 ## 7. Testing
 
@@ -109,7 +102,6 @@ trim_trailing_whitespace = true
   Vitest). C: a small test harness per module.
 - A card cannot reach **Done** with failing or skipped tests.
 
-
 ## 8. Error Handling
 
 - Fail loud in development, degrade gracefully in production. No silently
@@ -119,14 +111,12 @@ trim_trailing_whitespace = true
 - Never trust client-reported scores/timings — the scoring/anti-cheat checks live
   server-side (see Cheating section of [BRAINSTORM.md](./BRAINSTORM.md)).
 
-
 ## 9. File & Project Organization
 
 - Group by feature/domain, not by file type, once structure emerges.
 - One primary export per file; filename matches that export.
 - Keep config (`.editorconfig`, `.prettierrc`, `.clang-format`, lint configs) at
   the repo root and committed.
-
 
 ## 10. Commit Conventions
 
@@ -192,7 +182,6 @@ build: update dependencies
 ```
 
 One logical change per commit (small commits — XP).
-
 
 ## 11. Tooling Checklist (set up once, before serious coding starts)
 
