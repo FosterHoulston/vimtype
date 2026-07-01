@@ -2,6 +2,5 @@
 .env
 /node_modules/
 
-# React Router
-/.react-router/
-/build/
+# TypeScript build output
+/dist/
