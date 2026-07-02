@@ -3,3 +3,21 @@ repos:
     rev: v2.9.0
     hooks:
       - id: conventional-commits
+
+  # Local hooks reuse the tools pinned in package.json (single source of truth).
+  # Both run only on staged files and auto-fix; if a file is changed or a
+  # warning survives, the hook fails and the commit is aborted.
+  - repo: local
+    hooks:
+      - id: eslint
+        name: eslint (lint + autofix)
+        entry: npx eslint --fix --max-warnings=0
+        language: system
+        files: \.(js|ts|tsx)$
+        exclude: ^(client/\.react-router/|.*/(dist|build)/)
+
+      - id: prettier
+        name: prettier (format)
+        entry: npx prettier --write --ignore-unknown
+        language: system
+        types_or: [javascript, jsx, ts, tsx, json, css, yaml, markdown]
