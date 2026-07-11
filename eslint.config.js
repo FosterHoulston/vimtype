@@ -9,7 +9,13 @@ import tseslint from "typescript-eslint";
 export default defineConfig([
   // Don't lint build output or vendored code.
   {
-    ignores: ["**/node_modules/**", "**/dist/**", "**/build/**", "client/.react-router/**"],
+    ignores: [
+      "**/node_modules/**",
+      "**/dist/**",
+      "**/build/**",
+      "client/.react-router/**",
+      "client/public/vim-wasm/**",
+    ],
   },
 
   // Shared rules for every source file, JS and TS alike.

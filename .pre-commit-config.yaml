@@ -14,7 +14,7 @@ repos:
         entry: npx eslint --fix --max-warnings=0
         language: system
         files: \.(js|ts|tsx)$
-        exclude: ^(client/\.react-router/|.*/(dist|build)/)
+        exclude: ^(client/\.react-router/|.*/(dist|build)/|client/public/vim-wasm/)
 
       - id: prettier
         name: prettier (format)

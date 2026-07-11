@@ -10,3 +10,6 @@ client/.react-router
 
 # Lockfiles — owned by the package manager
 package-lock.json
+
+# vendored code
+client/public/vim-wasm
