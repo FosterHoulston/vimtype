@@ -91,10 +91,11 @@ isolated**, which requires the _document_ response to send two headers:
 `Cross-Origin-Opener-Policy: same-origin` and
 `Cross-Origin-Embedder-Policy: require-corp`.
 
-**Fix (in progress):** Adding the COOP/COEP headers to the dev server — see #7 for the
-wrinkle. nginx (production) will need the same headers later.
+**Fix:** Made the page cross-origin isolated by sending the COOP/COEP headers on the
+document response — same solution as #7. nginx (production) will need the same headers
+later.
 
-**Status:** In progress.
+**Status:** Resolved.
 
 ---
 
@@ -126,10 +127,11 @@ framework mode is written by the React Router dev plugin's own request handler, 
 ignores `server.headers`. Cross-origin isolation is decided by the _document_ response —
 the one response that was missing the headers.
 
-**Fix (in progress):** Replace `server.headers` with a small inline Vite plugin using
+**Fix:** Replaced `server.headers` with a small inline Vite plugin using
 `configureServer` to register a middleware that sets both headers on _every_ response via
-`res.setHeader(...)` before `next()`, so the document is covered too.
+`res.setHeader(...)` before `next()`, so the document is covered too. Vim boots once the
+document is cross-origin isolated (`crossOriginIsolated === true`).
 
-**Status:** In progress.
+**Status:** Resolved.
 
 ---
