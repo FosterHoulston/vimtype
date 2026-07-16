@@ -42,7 +42,7 @@ trim_trailing_whitespace = true
 
 ## 3. TypeScript / React (frontend)
 
-- **Formatter:** Prettier (the source of truth for formatting.
+- **Formatter:** Prettier (the source of truth for formatting).
 - **Linter:** ESLint with `@typescript-eslint`. Lint must pass clean before
   a card leaves Testing & Validation.
 - **`strict` mode on** in `tsconfig.json`. No implicit `any`; prefer `unknown`
@@ -50,15 +50,70 @@ trim_trailing_whitespace = true
 - **No `any`** unless interfacing with an untyped library, and then localize and
   comment it.
 - **Components:** function components with hooks only — no class components.
-- **Naming:**
-  - `camelCase` — variables, functions.
+- **Identifier naming:**
+  - `camelCase` — variables, functions, and hooks (`useGameTimer`).
   - `PascalCase` — components, types, interfaces, enums.
   - `UPPER_SNAKE_CASE` — module-level constants.
-  - Component files match the component name: `GameLobby.tsx`.
-- **Imports:** prefer named exports; avoid default exports except for React
-  components/pages. Group external → internal → relative.
+- **Filenames: `kebab-case`**, matching React Router's default idiom —
+  `game-lobby.tsx` exports `GameLobby`; `use-game-timer.ts` exports
+  `useGameTimer`. A filename is the kebab-case form of its primary export; the
+  exported identifier keeps its own casing. This applies to route modules,
+  components, hooks, and helpers alike.
+- **Imports:** prefer named exports. The one sanctioned default export is a
+  route module's route component (React Router requires it), plus `root.tsx`.
+  Group external → internal → relative.
 - Prefer `const`; use `let` only when reassigning. Never `var`.
 - Keep components small; lift shared logic into hooks (`useFoo`) or plain modules.
+
+### File layout (React Router framework mode)
+
+Routes live under `app/routes/` and are named by their **URL segment**, not by a
+component name. Route-private code — components, hooks, and helpers used by
+exactly one route — is **colocated** next to that route. Only genuinely shared UI
+belongs in `app/components/`.
+
+```
+app/
+├── root.tsx                  # <html> shell, global error boundary, <Outlet/>
+├── routes.ts                 # route config (URL → file mapping)
+├── app.css                   # global styles / Tailwind entry
+│
+├── routes/
+│   ├── home.tsx              # /              simple route → flat file
+│   ├── about.tsx             # /about
+│   │
+│   ├── auth/
+│   │   ├── layout.tsx        # pathless layout (shared shell / redirects)
+│   │   ├── login.tsx         # /login
+│   │   └── register.tsx      # /register
+│   │
+│   └── games/
+│       ├── layout.tsx        # /games layout — sidebar, <Outlet/>
+│       ├── games-home.tsx    # /games                        index
+│       ├── game-detail.tsx   # /games/:gameId
+│       ├── game-sessions.tsx # /games/:gameId/sessions
+│       │
+│       └── game-session/             # /games/:gameId/sessions/:sessionId
+│           ├── game-session.tsx      # the route module (loader/action/default)
+│           ├── game-session-card.tsx # route-private component (used only here)
+│           ├── scoreboard.tsx        # more session-only components
+│           ├── use-session-timer.ts  # route-private hook
+│           └── session-status.ts     # route-private helpers / types
+│
+└── components/               # ONLY genuinely shared UI
+    ├── button.tsx            # used across auth, games, everywhere
+    ├── avatar.tsx
+    └── page-header.tsx
+```
+
+- A simple route is a **flat file** (`home.tsx`); a route that owns child routes
+  or private components becomes a **folder** (`game-session/`) whose route module
+  keeps the folder's name (`game-session.tsx`).
+- **Layouts** are `layout.tsx`: they render an `<Outlet/>` for nested routes and
+  may be _pathless_ (grouping or redirect only, no URL segment).
+- **Colocation rule (YAGNI):** keep a component beside the route that uses it
+  until a _second_ consumer appears — only then promote it to `app/components/`.
+  Don't pre-share.
 
 ## 4. C (low-level / WASM-adjacent and any native tooling)
 
@@ -113,8 +168,10 @@ trim_trailing_whitespace = true
 
 ## 9. File & Project Organization
 
-- Group by feature/domain, not by file type, once structure emerges.
-- One primary export per file; filename matches that export.
+- Group by feature/domain, not by file type, once structure emerges. For the
+  frontend this means **colocation** — see §3's file-layout rules.
+- One primary export per file; the filename is the `kebab-case` form of that
+  export (§3).
 - Keep config (`.editorconfig`, `.prettierrc`, `.clang-format`, lint configs) at
   the repo root and committed.
 
