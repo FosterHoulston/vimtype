@@ -1,7 +1,7 @@
 import { useRef, useEffect } from "react";
 import { VimWasm } from "vim-wasm";
 
-export function GameSession() {
+export function GameSessionCard() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
 
