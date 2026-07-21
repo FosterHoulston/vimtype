@@ -135,3 +135,60 @@ document is cross-origin isolated (`crossOriginIsolated === true`).
 **Status:** Resolved.
 
 ---
+
+## 8. Two-pane grid collapsed instead of filling the screen
+
+**Symptom:** The game-session grid (`grid-rows-[1fr_auto]`) shrank to its content height
+instead of filling the viewport; the `1fr` pane row had no height to take and the status
+bar rode up under the panes.
+
+**Root cause:** A `1fr` track (and `h-full`) needs a **definite height to cascade from**,
+and the chain has to be unbroken from the viewport down. Any missing link leaves `1fr`
+with nothing to distribute, so the rows collapse to content height.
+
+**Fix:** Made the height chain continuous: root shell `h-dvh` → the `<Outlet>` wrapper
+`flex-1 flex flex-col min-h-0` → the page `<main>` `h-full`. With real vertical space, the
+grid finally split into `1fr auto` as intended.
+
+**Status:** Resolved (shell links in `113260e`, the `<main> h-full` in `fcafc14`).
+
+---
+
+## 9. vim-wasm rendered a tiny screen in the corner of the pane
+
+**Symptom:** Vim booted but drew a small box in the top-left of the left pane ("it stops
+in the middle") instead of filling it.
+
+**Root cause:** Two things compound. A bare `<canvas>` defaults to **300×150 px**
+regardless of its container, and vim-wasm **measures the canvas's DOM size at the moment
+`new VimWasm(...)` is constructed** (its `ScreenCanvas`/`ResizeHandler`) and tells the
+worker to draw exactly that many pixels. So Vim faithfully rendered a 300×150 screen.
+
+**Fix:** Gave the canvas a real display size that fills the pane _before_ Vim starts —
+made `TestPane` a flex column and let the canvas grow (`flex-1`) inside a definite-height
+pane. Because the `useEffect` runs _after_ layout, the canvas is already full-size when
+vim-wasm measures it. (vim-wasm's built-in `ResizeHandler` then keeps it in sync on later
+resizes.)
+
+**Status:** Resolved (commit `fcafc14`).
+
+---
+
+## 10. Hiding the Vim input with `display: none` killed all keystrokes
+
+**Symptom:** Hiding vim-wasm's helper `<input>` so it wasn't visible in the pane made Vim
+stop receiving any typing.
+
+**Root cause:** vim-wasm routes every keystroke through that hidden `<input>`, so it must
+stay **focusable and in the layout**. `display: none`, `hidden`, and `visibility: hidden`
+all pull the element out of the focus/accessibility tree — it can no longer be focused or
+receive `keydown`. `opacity: 0` alone keeps it focusable but still occupies layout space.
+
+**Fix:** Used Tailwind's `sr-only` utility — the "visually hidden" recipe (1px, clipped,
+absolutely positioned) that keeps the input in the DOM and focusable while giving it no
+visual footprint. Vim keeps getting keys; clicking the canvas re-focuses the input via
+vim-wasm's own `onClick` handler.
+
+**Status:** Resolved (commit `fcafc14`).
+
+---
