@@ -62,6 +62,11 @@ trim_trailing_whitespace = true
 - **Imports:** prefer named exports. The one sanctioned default export is a
   route module's route component (React Router requires it), plus `root.tsx`.
   Group external → internal → relative.
+- **Import paths:** use the `~/*` alias (→ `./app/*`) for imports that cross an
+  app-level boundary (reaching into `components/`, hooks, or another feature);
+  use a relative path (`./`, `../`) only for **colocated siblings** in the same
+  folder or right next door. Always extensionless — no `.ts`/`.tsx` in the
+  specifier.
 - Prefer `const`; use `let` only when reassigning. Never `var`.
 - Keep components small; lift shared logic into hooks (`useFoo`) or plain modules.
 
