@@ -3,3 +3,6 @@
 // * current vim mode
 // * tabs/spaces setting
 // * ...
+export function StatusBar() {
+  return <p>Status Bar</p>;
+}
