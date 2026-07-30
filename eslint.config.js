@@ -71,6 +71,7 @@ export default defineConfig([
         { selector: "function", format: ["camelCase", "PascalCase"] },
         { selector: "typeLike", format: ["PascalCase"] },
         { selector: "enumMember", format: ["PascalCase", "UPPER_CASE"] },
+        { selector: "parameter", format: ["camelCase", "PascalCase"], leadingUnderscore: "allow" },
         // Don't police import names or externally-shaped object keys (JSON/API).
         { selector: "import", format: null },
         { selector: "objectLiteralProperty", format: null },
