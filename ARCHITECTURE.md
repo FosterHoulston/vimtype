@@ -12,7 +12,7 @@ Vimtype is not one app but a small distributed system with distinct subsystems:
   renderer, modal (Normal/Insert) gameplay, two-pane game session.
 - **Stateless API server** — Fastify + `pg` + `zod`.
 - **Server-authoritative scoring + custom LSP core** — security-critical.
-- **PostgreSQL** — users, sessions, codeblocks, leaderboards, resumable session state.
+- **PostgreSQL** — users, sessions, codeblocks, leaderboards.
 
 No single pattern fits all of it well, so the architecture is a small stack of
 patterns, each owning the seam it is best at.
@@ -54,14 +54,19 @@ session, results, and leaderboard pages naturally.
 ### 3. State machine / statechart — the game session (+ Vim modes)
 
 Model gameplay as an explicit finite state machine:
-`lobby → active → (incomplete/resumable) → results`, plus modal Normal/Insert behavior.
+`lobby → ready → active → results`, plus modal Normal/Insert behavior.
 
 **Why:** gameplay is inherently stateful, and several requirements are illegal-state
-problems in disguise (e.g. a user with an unfinished codeblock cannot start another; a
-restart reshuffles the seeded errors — see BRAINSTORM "Cheating"). A state machine makes
-transitions explicit, blocks illegal states, and is trivially unit-testable, which lines
-up with the XP "automated tests" element. Prefer a reducer or a small statechart; do not
-over-reach.
+problems in disguise. A state machine makes transitions explicit, blocks illegal states,
+and is trivially unit-testable, which lines up with the XP "automated tests" element.
+Prefer a reducer or a small statechart; do not over-reach.
+
+Two transitions carry real rules (BRAINSTORM §15): the clock starts on the **first
+keypress**, so `ready → active` is keystroke-triggered rather than load-triggered; and a
+suspended session **restarts** rather than resuming, so there is no `incomplete` state
+and no partial-progress persistence. That absence is a deliberate simplification — it
+removes resumable-state storage, the "must finish before starting another" rule, and an
+entire class of tamperable client state.
 
 ### 4. Event-driven / message-passing + Observer — the worker & LSP seams
 
@@ -72,6 +77,35 @@ the target → emit errors → repaint sign column / underlines.
 **Why:** essential at these two seams, but _not_ a whole-system organizing principle.
 Apply it locally, not everywhere.
 
+#### The vim.wasm bridge (verified against vim-wasm, Vim 8.2.0055)
+
+The editor seam is narrow, and every game-session feature has to be expressed through
+it. What the build actually provides:
+
+| Direction                  | Mechanism                                  | Status                                      |
+| -------------------------- | ------------------------------------------ | ------------------------------------------- |
+| JS → Vim                   | `vim.cmdline(string)`                      | Public, documented                          |
+| Vim → JS (file contents)   | `:export` → `onFileExport(path, contents)` | Public                                      |
+| Vim → JS (arbitrary calls) | `jsevalfunc()` in Vim script               | Present in the WASM build, **undocumented** |
+
+Notes that constrain the design:
+
+- `VimWasm.readFile` is **private**, so `:export` is the supported path for getting
+  buffer contents out.
+- The canvas renderer's `drawText` accepts `underline`, `undercurl`, and `strike`,
+  so Vim-native error highlighting renders correctly (BRAINSTORM §10).
+- The system clipboard is bridged **only** if `VimWasm.readClipboard` is assigned;
+  leaving it unset disables it while Vim's internal registers keep working
+  (BRAINSTORM §12).
+
+**Open risk.** The live-feedback loop — buffer change → read buffer → diff → push
+highlights — depends on the Vim → JS direction, which is the least documented part of
+the bridge. BRAINSTORM §10, §11, and §13 all assume this loop is fast enough to feel
+live. **This should be spiked before building on it:** a throwaway branch that logs
+the buffer to the console on every `TextChanged`, and confirms the exact `:export`
+command spelling and `jsevalfunc()` semantics. If the loop is too slow, the error
+display model needs rethinking — and that is much cheaper to learn early.
+
 ### 5. Hexagonal (Ports & Adapters) — scoped to scoring + anti-cheat + LSP only
 
 Isolate the pure, server-authoritative scoring/validation domain behind ports, with
@@ -81,6 +115,17 @@ adapters for Postgres, the LSP implementation (native C vs. a wasm build), and t
 it testable in isolation. Ranked last because full hexagonal _everywhere_ would fight
 YAGNI on a 2-month solo build — the value is real only if confined to the scoring/LSP
 core.
+
+**The LSP runs on both sides, with different jobs** (BRAINSTORM §13): a client-side
+WASM build drives live error feedback, where latency forbids a round trip and the
+result is therefore untrusted; a server-side native C build performs authoritative
+final validation and scoring. This is precisely the adapter swap the port exists for.
+
+The two sides must share **one comparison implementation**, not two that agree by
+convention — otherwise the client can call a codeblock complete while the server
+rejects it. The same applies to the target renderer that materializes a codeblock in
+the player's tabs/indent settings (BRAINSTORM §14): byte-exact comparison is only
+meaningful if both sides produce identical bytes.
 
 ## How the patterns compose
 
