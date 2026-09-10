@@ -347,3 +347,49 @@ habit: **re-run eslint immediately after editing its config**, and treat a sudde
 zero findings as a failure signal, not a success.
 
 ---
+
+## 18. `npm install react-vim-wasm` failed with ERESOLVE
+
+_(Backfilled. This actually happened back when I first wired up vim-wasm, before entry
+#2 — I never logged it at the time, and later couldn't remember why I'd abandoned the
+component.)_
+
+**Symptom:** BRAINSTORM.md #6 said to use Rhysd's `react-vim-wasm` component, so I ran
+`npm install react-vim-wasm` in `client/`. npm refused to install it (error text below
+recovered by re-running the install with `--dry-run`, so the React version it names is
+today's, not July's):
+
+```
+npm error code ERESOLVE
+npm error While resolving: client@undefined
+npm error Found: react@19.2.7
+npm error Could not resolve dependency:
+npm error peer react@"^16.8.0" from react-vim-wasm@0.1.4
+```
+
+**Root cause:** `react-vim-wasm@0.1.4` was last published in 2019 and declares
+`peerDependencies: { react: "^16.8.0", react-dom: "^16.8.0" }`. My client is on React
+19.2.7, which is outside that range. Since npm 7, unsatisfiable peer ranges are a **hard
+error**, not the warning they used to be — so the install aborts rather than resolving to
+something broken. (It's also CommonJS-only: no `module` field, no ESM build, which Vite
+would then have to interop-shim.)
+
+**Fix:** Dropped the wrapper and drove vim-wasm's own `VimWasm` class directly from my own
+component (`test-pane.tsx`), which is what the package's README shows anyway.
+
+npm offered `--force` / `--legacy-peer-deps` to push past the conflict, and I deliberately
+didn't take either. Both only silence the check; they don't make the package compatible.
+And the wrapper was never worth that risk — `<Vim />` is a thin shell around the same
+`new VimWasm({ canvas, input, workerScriptPath })` call. Every genuinely hard part of this
+integration would have remained: serving the worker as a static asset (#2), COOP/COEP for
+`SharedArrayBuffer` (#5, #7), sizing the canvas before construction (#9), and keeping the
+input focusable (#10). It would have saved me about twenty lines of `useRef` +
+`useEffect` — the same twenty lines I later had to understand properly to fix #9, #10, and
+the StrictMode double-mount in `24a03d7`.
+
+**Status:** Resolved by not using the package. The general rule I'm taking from this:
+**check a package's `peerDependencies` against my React version before installing**, and
+treat an ERESOLVE on an old package as a signal about its age, not an obstacle to force
+past. BRAINSTORM.md #6 has been corrected to match.
+
+---
