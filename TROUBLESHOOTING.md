@@ -348,58 +348,48 @@ zero findings as a failure signal, not a success.
 
 ---
 
-## 18. Two Vim instances were running in one canvas (StrictMode + an effect with no cleanup)
+## 18. `npm install react-vim-wasm` failed with ERESOLVE
 
-**Symptom:** Stage 0 of the vim-wasm feedback-loop spike. Running
-`:call jsevalfunc('console.log("hi")', [], v:true)` in the browser's Vim logged `hi`
-**twice** for every single invocation.
+_(Backfilled. This actually happened back when I first wired up vim-wasm, before entry
+#2 — I never logged it at the time, and later couldn't remember why I'd abandoned the
+component.)_
 
-**Root cause:** Not a `jsevalfunc` problem at all — I had two Vims running, and the
-keystroke was being delivered to both. Four things compound:
+**Symptom:** BRAINSTORM.md #6 said to use Rhysd's `react-vim-wasm` component, so I ran
+`npm install react-vim-wasm` in `client/`. npm refused to install it (error text below
+recovered by re-running the install with `--dry-run`, so the React version it names is
+today's, not July's):
 
-1. I have no `app/entry.client.tsx`, so React Router falls back to its built-in default,
-   which wraps the app in `<StrictMode>`
-   (`@react-router/dev/dist/config/defaults/entry.client.tsx`).
-2. In development, StrictMode deliberately mounts → unmounts → remounts every component,
-   so my `useEffect` body ran **twice**. This is intentional: it exists to expose effects
-   that don't clean up after themselves.
-3. My effect in `test-pane.tsx` returned no teardown function, so the first `VimWasm` was
-   never stopped.
-4. Both instances were handed the _same_ `canvasRef.current` and `inputRef.current`.
-   vim-wasm's `InputHandler` attaches a keydown listener to that input, so one keystroke
-   reached two Vims, and each ran the command.
+```
+npm error code ERESOLVE
+npm error While resolving: client@undefined
+npm error Found: react@19.2.7
+npm error Could not resolve dependency:
+npm error peer react@"^16.8.0" from react-vim-wasm@0.1.4
+```
 
-StrictMode wasn't the bug — it was the smoke detector. The missing cleanup was the bug.
+**Root cause:** `react-vim-wasm@0.1.4` was last published in 2019 and declares
+`peerDependencies: { react: "^16.8.0", react-dom: "^16.8.0" }`. My client is on React
+19.2.7, which is outside that range. Since npm 7, unsatisfiable peer ranges are a **hard
+error**, not the warning they used to be — so the install aborts rather than resolving to
+something broken. (It's also CommonJS-only: no `module` field, no ESM build, which Vite
+would then have to interop-shim.)
 
-**Fix:** Added a third ref, `useRef<VimWasm | null>(null)`, holding the instance itself;
-the effect returns early if it's already set. I stored the instance rather than a boolean
-because later spike stages need to reach that object again (`vim.onVimInit`,
-`vim.cmdline`) — a boolean would record that a Vim exists without giving me any way to
-talk to it.
+**Fix:** Dropped the wrapper and drove vim-wasm's own `VimWasm` class directly from my own
+component (`test-pane.tsx`), which is what the package's README shows anyway.
 
-My first attempt at this **didn't work, and the reason is worth writing down**: I added
-the check to the early-return condition but never assigned anything to the ref. It stayed
-`null` forever, the condition was always false, and both effects sailed straight through.
-An unarmed guard behaves _identically_ to no guard — no error, no warning, same original
-symptom. When a guard appears not to fire, confirm something actually writes to it before
-investigating anything more interesting.
+npm offered `--force` / `--legacy-peer-deps` to push past the conflict, and I deliberately
+didn't take either. Both only silence the check; they don't make the package compatible.
+And the wrapper was never worth that risk — `<Vim />` is a thin shell around the same
+`new VimWasm({ canvas, input, workerScriptPath })` call. Every genuinely hard part of this
+integration would have remained: serving the worker as a static asset (#2), COOP/COEP for
+`SharedArrayBuffer` (#5, #7), sizing the canvas before construction (#9), and keeping the
+input focusable (#10). It would have saved me about twenty lines of `useRef` +
+`useEffect` — the same twenty lines I later had to understand properly to fix #9, #10, and
+the StrictMode double-mount in `24a03d7`.
 
-**Status:** Resolved. Two things I'm deliberately leaving:
-
-- **No teardown.** If `TestPane` ever really unmounts (actual navigation, not StrictMode's
-  simulated cycle), the ref dies with the component and I leak a Vim. Acceptable on a
-  throwaway spike branch; must be revisited before the game session ships. It's awkward
-  to fix properly, too — there is no public `stop()`. The worker is only terminated via
-  Vim's own exit path (`vimwasm.ts:1055`), and `cmdline("qall!")` throws if Vim hasn't
-  finished booting (`vimwasm.ts:852`), which StrictMode's near-instant unmount makes
-  likely.
-- **StrictMode stays on.** Writing my own `entry.client.tsx` without it would have made
-  the double-log disappear too, but that fixes the symptom by deleting the thing that
-  _detected_ it — and would give up that check across the whole app to solve one
-  component's problem.
-
-Worth noting why this mattered beyond a duplicated log line: two WASM instances competing
-for the main thread and drawing to the same canvas would have corrupted every latency
-measurement the spike exists to collect. Good thing it surfaced in stage 0.
+**Status:** Resolved by not using the package. The general rule I'm taking from this:
+**check a package's `peerDependencies` against my React version before installing**, and
+treat an ERESOLVE on an old package as a signal about its age, not an obstacle to force
+past. BRAINSTORM.md #6 has been corrected to match.
 
 ---

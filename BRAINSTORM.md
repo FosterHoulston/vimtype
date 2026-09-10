@@ -64,7 +64,10 @@
 ### 6. Am I implementing a real terminal in the browser, or am I creating an emulation?
 
 - Neither. I will use Rhysd's vim.wasm project that compiles Vim (not Neovim) to WASM,
-  with a canvas renderer. Also use Rhysd's react-vim-wasm component.
+  with a canvas renderer.
+- ~~Also use Rhysd's react-vim-wasm component.~~ **Revised.** `react-vim-wasm` won't
+  install against React 19 and is a thin wrapper besides, so I drive the `VimWasm` class
+  directly from my own component. See [Troubleshooting #18](TROUBLESHOOTING.md).
 
 ### 7. What will the MVP look like?
 
