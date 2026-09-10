@@ -4,15 +4,17 @@ import { VimWasm } from "vim-wasm";
 export function TestPane() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
+  const vimRef = useRef<VimWasm | null>(null);
 
   useEffect(() => {
-    if (!canvasRef.current || !inputRef.current) return;
+    if (!canvasRef.current || !inputRef.current || vimRef.current) return;
 
     const vim = new VimWasm({
       canvas: canvasRef.current,
       input: inputRef.current,
       workerScriptPath: "/vim-wasm/vim.js",
     });
+    vimRef.current = vim;
     vim.start();
   }, []);
 
